@@ -1,0 +1,53 @@
+# analysis_options.yaml
+# Dart 3.x / Flutter 최신 린트 세트 + 실무용 추가 규칙
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    # 더 엄격한 타입 추론/원시 타입 금지
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    # 경고를 에러로 승격(필요 시 조절)
+    missing_required_param: error
+    missing_return: error
+    dead_code: error
+    todo: ignore  # TODO를 경고로 보고 싶다면 warning/ error 로 변경
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gen.dart"
+    - "**/generated/**"
+    - "build/**"
+
+linter:
+  rules:
+    # ---- 스타일 일관성 ----
+    prefer_single_quotes: true
+    lines_longer_than_80_chars: false
+    always_declare_return_types: true
+    prefer_final_locals: true
+    prefer_final_in_for_each: true
+    unnecessary_late: true
+    use_super_parameters: true
+    sort_constructors_first: true
+    sort_pub_dependencies: true
+    require_trailing_commas: true
+
+    # ---- 안전성/버그 방지 ----
+    avoid_print: false         # 디버깅 편의 유지(원하면 true로)
+    avoid_unnecessary_containers: true
+    avoid_redundant_argument_values: true
+    cancel_subscriptions: true
+    close_sinks: true
+    unawaited_futures: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    avoid_returning_null_for_future: true
+    no_leading_underscores_for_local_identifiers: true
+
+    # ---- 테스트/패키징 친화 ----
+    depend_on_referenced_packages: true
+    package_names: true
+    secure_pubspec_urls: true
