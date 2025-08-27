@@ -11,6 +11,6 @@ dependencies:
   http: ^1.4.0            # latest http
 
 dev_dependencies:
+  flutter_lints: ^6.0.0   # latest lint set
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0   # latest lint set
