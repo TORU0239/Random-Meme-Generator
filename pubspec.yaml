@@ -1,0 +1,14 @@
+name: anytalk_meme
+description: Generate one-liners (memes) from a keyword via OpenAI.
+publish_to: "none"
+
+environment:
+  sdk: "^3.7.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+
+flutter:
+  uses-material-design: true
