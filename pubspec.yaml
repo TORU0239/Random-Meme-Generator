@@ -3,12 +3,14 @@ description: Generate one-liners (memes) from a keyword via OpenAI.
 publish_to: "none"
 
 environment:
-  sdk: "^3.7.0"
+  sdk: ">=3.9.0 <4.0.0"   # Dart 3.9 stable
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.2.2
+  http: ^1.4.0            # latest http
 
-flutter:
-  uses-material-design: true
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0   # latest lint set
