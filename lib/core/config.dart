@@ -1,7 +1,7 @@
-/// Centralized OpenAI configuration loaded via --dart-define.
-///
-/// Example run:
-/// flutter run --dart-define=OPENAI_API_KEY=sk-xxxx
+// Centralized OpenAI configuration loaded via --dart-define.
+//
+// Example run:
+// flutter run --dart-define=OPENAI_API_KEY=sk-xxxx
 
 const String openaiApiKey = String.fromEnvironment('OPENAI_API_KEY');
 
@@ -19,4 +19,3 @@ const int openaiTimeoutMs = int.fromEnvironment(
   'OPENAI_TIMEOUT_MS',
   defaultValue: 25000,
 );
-
