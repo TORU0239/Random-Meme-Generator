@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-/// API key is injected via --dart-define
-const String kOpenAIApiKey = String.fromEnvironment('OPENAI_API_KEY');
+import 'package:anytalk_meme/core/config.dart';
 
 class MemeService {
   MemeService({
@@ -11,9 +9,9 @@ class MemeService {
     String? model,
     Duration? timeout,
   }) : _client = client ?? http.Client(),
-       _endpoint = endpoint ?? 'https://api.openai.com/v1/chat/completions',
-       _model = model ?? 'gpt-4o-mini',
-       _timeout = timeout ?? const Duration(seconds: 25);
+       _endpoint = endpoint ?? openaiEndpoint,
+       _model = model ?? openaiModel,
+       _timeout = timeout ?? Duration(milliseconds: openaiTimeoutMs);
 
   final http.Client _client;
   final String _endpoint;
@@ -26,12 +24,12 @@ class MemeService {
     int maxCount = 3,
     double temperature = 0.9,
   }) async {
-    if (kOpenAIApiKey.isEmpty) {
+    if (openaiApiKey.isEmpty) {
       throw const FormatException('OPENAI_API_KEY not set');
     }
 
     final headers = <String, String>{
-      'Authorization': 'Bearer $kOpenAIApiKey',
+      'Authorization': 'Bearer $openaiApiKey',
       'Content-Type': 'application/json',
     };
 

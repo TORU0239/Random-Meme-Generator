@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:anytalk_meme/data/meme_service.dart';
 
 /// A function type that generates memes for a given keyword.
 /// Replace this with your real implementation later.
 typedef MemeGenerator = Future<List<String>> Function(String keyword);
 
 void main() {
-  runApp(
-    const MemeApp(
-      generateMemes: _demoGenerator, // Demo generator so UI runs out of the box
-    ),
-  );
+  runApp(const MemeApp());
 }
 
-class MemeApp extends StatelessWidget {
-  const MemeApp({super.key, required this.generateMemes});
+class MemeApp extends StatefulWidget {
+  const MemeApp({super.key});
 
-  /// Injected meme generator function.
-  final MemeGenerator generateMemes;
+  @override
+  State<MemeApp> createState() => _MemeAppState();
+}
+
+class _MemeAppState extends State<MemeApp> {
+  late final MemeService _service;
+
+  @override
+  void initState() {
+    super.initState();
+    _service = MemeService();
+  }
+
+  Future<List<String>> _generate(String keyword) {
+    return _service.generate(keyword: keyword);
+  }
+
+  @override
+  void dispose() {
+    _service.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +52,14 @@ class MemeApp extends StatelessWidget {
           backgroundColor: scheme.surface,
           foregroundColor: scheme.onSurface,
           elevation: 1, // Give a thin shadow so it reads as a bar
-          surfaceTintColor: Colors
-              .transparent, // Avoid Material 3 tint making it look flat/merged
+          surfaceTintColor:
+              Colors.transparent, // Avoid Material 3 tint making it look flat/merged
           centerTitle: true,
           // Make status bar icons dark on light backgrounds.
           systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
       ),
-      home: MemeHomePage(generateMemes: generateMemes),
+      home: MemeHomePage(generateMemes: _generate),
     );
   }
 }
@@ -175,18 +192,4 @@ class _MemeHomePageState extends State<MemeHomePage> {
   }
 }
 
-/// A simple demo generator to keep the UI runnable without backend.
-///
-/// Replace this function with a real implementation, e.g.:
-/// - Import your service file
-/// - final service = MemeService(...);
-/// - return service.generate(keyword: keyword);
-Future<List<String>> _demoGenerator(String keyword) async {
-  await Future.delayed(const Duration(milliseconds: 300));
-  final String k = keyword.isEmpty ? 'random' : keyword;
-  return <String>[
-    'When I searched "$k", my coffee searched me back.',
-    '"$k" was trending, so I pretended I knew why.',
-    'I asked "$k" for advice; it said: try turning it off and on.',
-  ];
-}
+// The demo generator is removed; generation now uses the real API via MemeService.
