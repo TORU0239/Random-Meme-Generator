@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// A function type that generates memes for a given keyword.
-/// Replace this with your real implementation (e.g., OpenAI-backed).
+/// Replace this with your real implementation later.
 typedef MemeGenerator = Future<List<String>> Function(String keyword);
 
 void main() {
   runApp(
-    MemeApp(
-      // Inject a demo generator so the UI runs without any backend code.
-      generateMemes: _demoGenerator,
+    const MemeApp(
+      generateMemes: _demoGenerator, // Demo generator so UI runs out of the box
     ),
   );
 }
@@ -21,10 +21,27 @@ class MemeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Define a light color scheme; adjust if you plan to support dark mode.
+    final ColorScheme scheme = ColorScheme.fromSeed(seedColor: Colors.indigo);
+
     return MaterialApp(
       title: 'Random Meme Generator',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: scheme,
+        appBarTheme: AppBarTheme(
+          // Ensure the top bar is visibly distinct from the background.
+          backgroundColor: scheme.surface,
+          foregroundColor: scheme.onSurface,
+          elevation: 1, // Give a thin shadow so it reads as a bar
+          surfaceTintColor: Colors
+              .transparent, // Avoid Material 3 tint making it look flat/merged
+          centerTitle: true,
+          // Make status bar icons dark on light backgrounds.
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+      ),
       home: MemeHomePage(generateMemes: generateMemes),
     );
   }
@@ -48,7 +65,7 @@ class _MemeHomePageState extends State<MemeHomePage> {
 
   /// Triggers generation via the injected generator and updates UI state.
   Future<void> _onGeneratePressed() async {
-    final keyword = _controller.text.trim();
+    final String keyword = _controller.text.trim();
 
     setState(() {
       _loading = true;
@@ -57,7 +74,7 @@ class _MemeHomePageState extends State<MemeHomePage> {
     });
 
     try {
-      final memes = await widget.generateMemes(keyword);
+      final List<String> memes = await widget.generateMemes(keyword);
       setState(() {
         _memes = memes;
       });
@@ -165,9 +182,7 @@ class _MemeHomePageState extends State<MemeHomePage> {
 /// - final service = MemeService(...);
 /// - return service.generate(keyword: keyword);
 Future<List<String>> _demoGenerator(String keyword) async {
-  // Simulate a short delay to mimic network latency.
-  await Future.delayed(const Duration(milliseconds: 400));
-
+  await Future.delayed(const Duration(milliseconds: 300));
   final String k = keyword.isEmpty ? 'random' : keyword;
   return <String>[
     'When I searched "$k", my coffee searched me back.',
