@@ -11,7 +11,7 @@ class MemeService {
   }) : _client = client ?? http.Client(),
        _endpoint = endpoint ?? openaiEndpoint,
        _model = model ?? openaiModel,
-       _timeout = timeout ?? Duration(milliseconds: openaiTimeoutMs);
+       _timeout = timeout ?? const Duration(milliseconds: openaiTimeoutMs);
 
   final http.Client _client;
   final String _endpoint;
